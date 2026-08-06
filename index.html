@@ -1,60 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Design Prompts</title>
     <meta
       name="description"
       content="Copy-ready prompts for the design team — critique, exploration, handoff, and more."
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="atmosphere" aria-hidden="true"></div>
-
-    <header class="site-header">
-      <p class="brand">Design Prompts</p>
-      <p class="tagline">
-        Ready-to-copy prompts for critique, exploration, and handoff.
-      </p>
-      <div class="header-actions">
-        <label class="search">
-          <span class="visually-hidden">Search prompts</span>
-          <input
-            type="search"
-            id="search"
-            placeholder="Search prompts…"
-            autocomplete="off"
-          />
-        </label>
-      </div>
-    </header>
-
-    <nav class="filters" aria-label="Prompt categories" id="filters"></nav>
-
-    <main>
-      <p class="empty" id="empty" hidden>No prompts match that search.</p>
-      <div class="prompt-grid" id="prompt-grid"></div>
-    </main>
-
-    <footer class="site-footer">
-      <p>
-        Edit <code>prompts.json</code> to add or update prompts. Hosted on GitHub
-        Pages.
-      </p>
-    </footer>
-
-    <div class="toast" id="toast" role="status" aria-live="polite" hidden>
-      Copied
-    </div>
-
-    <script src="app.js" type="module"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

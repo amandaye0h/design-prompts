@@ -1,18 +1,17 @@
 # Design Prompts
 
-A simple site of copy-ready prompts for the design team.
+A copy-ready prompt library for the design team, built with Vite, React, and shadcn/ui.
 
 ## Local
 
-Open `index.html` in a browser, or serve the folder:
-
 ```bash
-npx serve .
+npm install
+npm run dev
 ```
 
 ## Add prompts
 
-Edit `prompts.json`. Each prompt needs:
+Edit `public/prompts.json`. Each prompt needs:
 
 ```json
 {
@@ -25,4 +24,4 @@ Edit `prompts.json`. Each prompt needs:
 
 ## Hosting
 
-Published via GitHub Pages from the `main` branch root.
+Published via GitHub Pages from the `main` branch (`npm run build` → `dist`).
