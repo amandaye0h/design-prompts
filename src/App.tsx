@@ -193,13 +193,11 @@ export default function App() {
 
   const categories = [
     "All",
-    "Discovery",
     "PRs",
     "Handoff",
     "Polish",
     "Prototyping",
     "E2E",
-    "Other",
   ]
 
   const filtered = useMemo(() => {
