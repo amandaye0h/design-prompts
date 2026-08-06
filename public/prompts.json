@@ -24,6 +24,13 @@
     "prompt": "Examples:\n• Update the padding from 4px to 8px for this component [Insert Screenshot]\n• Update the typography from body-md to body-sm [Insert Screenshot]"
   },
   {
+    "id": "polish-align-patterns",
+    "title": "Align design patterns",
+    "category": "Polish",
+    "prompt": "• Apply the pattern from image 1 to image 2\n• [Insert Screenshot 1] and [Insert Screenshot 2]",
+    "note": "Agent will need sufficient context of designs in Screenshot 1"
+  },
+  {
     "id": "prs-generate-description",
     "title": "Generate a description",
     "category": "PRs",
@@ -33,7 +40,8 @@
     "id": "prs-push-changes",
     "title": "Create a PR",
     "category": "PRs",
-    "prompt": "• Add and commit the changes\n• Run /mms-create-pr\n• Open the PR"
+    "prompt": "• Add and commit the changes\n• Run /mms-create-pr",
+    "note": "MetaMask Skills must be installed"
   },
   {
     "id": "prs-install-metamask-skills",
@@ -62,6 +70,13 @@
     }
   },
   {
+    "id": "e2e-babysit-pr",
+    "title": "Babysit a PR",
+    "category": "E2E",
+    "prompt": "• Use /autopilot\n• Babysit [Insert Link]\n• Keep looping until mergeable + green CI + comments triaged",
+    "note": "Use with extreme caution"
+  },
+  {
     "id": "prs-merge-conflict",
     "title": "Fix a merge conflict",
     "category": "E2E",
@@ -73,13 +88,7 @@
     "category": "E2E",
     "prompt": "• Fix this issue [Insert Screenshot]"
   },
-  {
-    "id": "e2e-babysit-pr",
-    "title": "Babysit a PR",
-    "category": "E2E",
-    "prompt": "• Use /autopilot\n• Babysit [Insert Link]\n• Keep looping until mergeable + green CI + comments triaged",
-    "note": "Use with extreme caution"
-  },
+
   {
     "id": "prototyping-test-animations",
     "title": "Test animations",

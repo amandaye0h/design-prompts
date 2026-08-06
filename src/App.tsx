@@ -48,9 +48,12 @@ const INSERT_TITLES: Record<string, string> = {
 function InsertPlaceholderBadge({ label }: { label: string }) {
   const kind =
     label.match(/screenshot|link|skill|name|branch/i)?.[0].toLowerCase() ?? ""
+  const screenshotNumber = label.match(/screenshot\s*(\d+)/i)?.[1]
   const display =
     kind === "screenshot"
-      ? "Insert Screenshot"
+      ? screenshotNumber
+        ? `Insert Screenshot ${screenshotNumber}`
+        : "Insert Screenshot"
       : kind === "link"
         ? "Insert Link"
         : kind === "skill"
