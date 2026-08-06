@@ -6,6 +6,12 @@
     "prompt": "• Create a branch based off of main called [Insert name].\n• Make sure you've pulled the latest changes from main."
   },
   {
+    "id": "handoff-figma-mcp",
+    "title": "Implement a Figma design",
+    "category": "Handoff",
+    "prompt": "• Use figma-design-to-code to implement this Figma design: [Insert Link]"
+  },
+  {
     "id": "prs-generate-description",
     "title": "Generate a description",
     "category": "PRs",
@@ -19,9 +25,15 @@
   },
   {
     "id": "discovery-screen",
-    "title": "Finding a component",
+    "title": "Find a component",
     "category": "Polish",
     "prompt": "• Point me to this component in the repo [Insert Screenshot]"
+  },
+  {
+    "id": "polish-feature",
+    "title": "Polish a feature",
+    "category": "Polish",
+    "prompt": "Examples:\n• Update the padding from 4px to 8px for this component [Insert Screenshot]\n• Update the typography from body-md to body-sm [Insert Screenshot]"
   },
   {
     "id": "discovery-slack-spec",
@@ -38,11 +50,5 @@
     "title": "Fix a merge conflict",
     "category": "E2E",
     "prompt": "• Fix this merge conflict [Insert Screenshot]"
-  },
-  {
-    "id": "handoff-figma-mcp",
-    "title": "Implement a Figma design",
-    "category": "Handoff",
-    "prompt": "• Use figma-design-to-code to implement this Figma design: [Insert Link]"
   }
 ]
