@@ -22,18 +22,21 @@ type Prompt = {
   title: string
   category: string
   prompt: string
+  badges?: string[]
 }
 
-const INSERT_PLACEHOLDER_RE = /\[Insert (?:screenshot|link|skill)[^\]]*\]/gi
+const INSERT_PLACEHOLDER_RE =
+  /\[Insert (?:screenshot|link|skill|name)[^\]]*\]/gi
 
 const INSERT_TITLES: Record<string, string> = {
   screenshot: "Attach a screenshot when using this prompt",
   link: "Paste a link when using this prompt",
   skill: "Attach or name a skill when using this prompt",
+  name: "Fill in a name when using this prompt",
 }
 
 function InsertPlaceholderBadge({ label }: { label: string }) {
-  const kind = label.match(/screenshot|link|skill/i)?.[0].toLowerCase() ?? ""
+  const kind = label.match(/screenshot|link|skill|name/i)?.[0].toLowerCase() ?? ""
   const display =
     kind === "screenshot"
       ? "Insert Screenshot"
@@ -41,21 +44,25 @@ function InsertPlaceholderBadge({ label }: { label: string }) {
         ? "Insert Link"
         : kind === "skill"
           ? "Insert Skill"
-          : label.replace(/^\[|\]$/g, "")
+          : kind === "name"
+            ? "Insert Name"
+            : label.replace(/^\[|\]$/g, "")
 
   const colorClass =
     kind === "screenshot"
-      ? "border-transparent bg-purple-500/15 text-purple-400/80"
+      ? "border-purple-500/40 text-purple-400/80"
       : kind === "skill"
-        ? "border-transparent bg-yellow-500/15 text-yellow-400/80"
+        ? "border-yellow-500/40 text-yellow-400/80"
         : kind === "link"
-          ? "border-transparent bg-teal-500/15 text-teal-400/80"
-          : "border-muted-foreground/50 text-muted-foreground"
+          ? "border-teal-500/40 text-teal-400/80"
+          : kind === "name"
+            ? "border-sky-500/40 text-sky-400/80"
+            : "border-muted-foreground/50 text-muted-foreground"
 
   return (
     <Badge
       variant="outline"
-      className={`mx-0.5 inline-flex w-fit translate-y-[-1px] align-middle font-normal ${colorClass}`}
+      className={`mx-0.5 inline-flex w-fit translate-y-[-1px] border-dashed bg-transparent align-middle font-normal ${colorClass}`}
       title={INSERT_TITLES[kind] ?? "Fill in this placeholder when using this prompt"}
     >
       {display}
@@ -114,9 +121,19 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
   return (
     <Card className="h-full">
       <CardHeader className="gap-2">
-        <Badge className="w-fit border-transparent bg-muted text-muted-foreground hover:bg-muted/90">
-          {prompt.category}
-        </Badge>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <Badge className="w-fit border-transparent bg-muted text-muted-foreground hover:bg-muted/90">
+            {prompt.category}
+          </Badge>
+          {prompt.badges?.map((badge) => (
+            <Badge
+              key={badge}
+              className="w-fit border-transparent bg-muted text-muted-foreground hover:bg-muted/90"
+            >
+              {badge}
+            </Badge>
+          ))}
+        </div>
         <CardTitle className="text-lg">{prompt.title}</CardTitle>
       </CardHeader>
       <CardContent className="flex-1">
