@@ -12,18 +12,6 @@
     "prompt": "• Use figma-design-to-code to implement this Figma design: [Insert Link]"
   },
   {
-    "id": "prs-generate-description",
-    "title": "Generate a description",
-    "category": "PRs",
-    "prompt": "• Create a PR description based on the changes in this branch\n• Make sure you follow the template in the repo\n• Let me review the description first. Do not push until I approve it."
-  },
-  {
-    "id": "prs-push-changes",
-    "title": "Push your changes to Github",
-    "category": "PRs",
-    "prompt": "• Add and commit the changes\n• Push my local branch to the remote"
-  },
-  {
     "id": "discovery-screen",
     "title": "Find a component",
     "category": "Polish",
@@ -34,6 +22,18 @@
     "title": "Polish a feature",
     "category": "Polish",
     "prompt": "Examples:\n• Update the padding from 4px to 8px for this component [Insert Screenshot]\n• Update the typography from body-md to body-sm [Insert Screenshot]"
+  },
+  {
+    "id": "prs-generate-description",
+    "title": "Generate a description",
+    "category": "PRs",
+    "prompt": "• Create a PR description based on the changes in this branch\n• Make sure you follow the template in the repo\n• Let me review the description first. Do not push until I approve it."
+  },
+  {
+    "id": "prs-push-changes",
+    "title": "Push your changes to Github",
+    "category": "PRs",
+    "prompt": "• Add and commit the changes\n• Push my local branch to the remote"
   },
   {
     "id": "discovery-slack-spec",
