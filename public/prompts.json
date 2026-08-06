@@ -1,11 +1,5 @@
 [
   {
-    "id": "critique-flow",
-    "title": "Critique a user flow",
-    "category": "Discovery",
-    "prompt": "[Insert screenshot] + Review this user flow with a product designer lens.\n\n1. Restate the job-to-be-done in one sentence.\n2. Call out friction points that add cognitive load, dead ends, or trust risk.\n3. Suggest 3 concrete improvements ranked by impact vs. effort.\n4. Note any accessibility or mobile constraints I should not ignore.\n\nKeep feedback specific to the screens and copy shown — avoid generic advice."
-  },
-  {
     "id": "discovery-screen",
     "title": "Finding a component",
     "category": "Discovery",
