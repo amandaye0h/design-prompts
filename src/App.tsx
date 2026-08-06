@@ -6,10 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Card,
-  CardContent,
   CardDescription,
-  CardFooter,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -23,6 +20,10 @@ type Prompt = {
   category: string
   prompt: string
   badges?: string[]
+  suggestedSkill?: {
+    label: string
+    url: string
+  }
 }
 
 const INSERT_PLACEHOLDER_RE =
@@ -119,8 +120,8 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
   }
 
   return (
-    <Card className="h-full">
-      <CardHeader className="gap-2">
+    <Card className="flex-col items-stretch gap-0 py-0 sm:flex-row sm:items-center">
+      <div className="flex min-w-0 flex-1 flex-col gap-2 px-4 py-4">
         <div className="flex flex-wrap items-center gap-1.5">
           <Badge className="w-fit border-transparent bg-muted text-muted-foreground hover:bg-muted/90">
             {prompt.category}
@@ -135,13 +136,24 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
           ))}
         </div>
         <CardTitle className="text-lg">{prompt.title}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex-1">
         <CardDescription className="whitespace-pre-wrap text-sm leading-relaxed">
           <PromptBody text={prompt.prompt} />
         </CardDescription>
-      </CardContent>
-      <CardFooter>
+        {prompt.suggestedSkill ? (
+          <p className="text-sm text-muted-foreground">
+            Suggested skill:{" "}
+            <a
+              href={prompt.suggestedSkill.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#F1BC8E] underline underline-offset-2 hover:text-[#F1BC8E]/90"
+            >
+              {prompt.suggestedSkill.label}
+            </a>
+          </p>
+        ) : null}
+      </div>
+      <div className="flex shrink-0 items-center border-t border-border/60 px-4 py-4 sm:border-t-0 sm:border-l sm:pl-4">
         <Button
           onClick={handleCopy}
           className="w-full bg-white text-black hover:bg-white/90 sm:w-auto"
@@ -158,7 +170,7 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
             </>
           )}
         </Button>
-      </CardFooter>
+      </div>
     </Card>
   )
 }
@@ -259,7 +271,7 @@ export default function App() {
             No prompts match that search.
           </p>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="flex flex-col gap-3">
             {filtered.map((prompt) => (
               <PromptCard key={prompt.id} prompt={prompt} />
             ))}

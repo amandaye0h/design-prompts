@@ -3,39 +3,43 @@
     "id": "discovery-screen",
     "title": "Finding a component",
     "category": "Polish",
-    "prompt": "[Insert screenshot] + Point me to this component in this repo"
+    "prompt": "• Point me to this component in the repo [Insert Screenshot]"
   },
   {
     "id": "discovery-slack-spec",
-    "title": "Creating design specs from Slack messages",
+    "title": "Create design specs from Slack messages",
     "category": "Discovery",
-    "prompt": "• Read this conversation in this Slack thread [insert link]\n• Using this skill [insert skill], draft a rough feature spec"
+    "prompt": "• Read this conversation in this Slack thread [insert link]\n• Using this skill [insert skill], draft a rough feature spec",
+    "suggestedSkill": {
+      "label": "write-spec",
+      "url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/write-spec/SKILL.md"
+    }
   },
   {
     "id": "prs-merge-conflict",
     "title": "Fix a merge conflict",
     "category": "PRs",
     "badges": ["E2E"],
-    "prompt": "[Insert Screenshot] Fix this merge conflict"
+    "prompt": "• Fix this merge conflict [Insert Screenshot]"
   },
   {
     "id": "prs-create-branch",
-    "title": "Creating a branch",
+    "title": "Create a branch",
     "category": "PRs",
     "badges": ["Core"],
     "prompt": "• Create a branch based off of main called [Insert name].\n• Make sure you've pulled the latest changes from main."
   },
   {
     "id": "prs-push-changes",
-    "title": "Pushing your changes to Github",
+    "title": "Push your changes to Github",
     "category": "PRs",
     "badges": ["Core"],
     "prompt": "• Add and commit the changes\n• Push my local branch to the remote"
   },
   {
     "id": "handoff-figma-mcp",
-    "title": "Implementing a Figma design",
+    "title": "Implement a Figma design",
     "category": "Handoff",
-    "prompt": "• Using the Figma MCP, implement this design [Insert Link]\n• Make sure you use all components from MetaMask Design System React Native"
+    "prompt": "• Use figma-design-to-code to implement this Figma design: [Insert Link]"
   }
 ]
