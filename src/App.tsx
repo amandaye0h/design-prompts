@@ -235,6 +235,7 @@ export default function App() {
     "Polish",
     "Prototyping",
     "E2E",
+    "System",
   ]
 
   const coreIds = [
