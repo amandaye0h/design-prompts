@@ -11,8 +11,8 @@
   --shadow: 0 18px 40px rgba(26, 24, 20, 0.08);
   --radius: 18px;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --font-display: "Fraunces", Georgia, serif;
-  --font-body: "DM Sans", system-ui, sans-serif;
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
 }
 
 *,
