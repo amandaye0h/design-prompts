@@ -2,13 +2,21 @@
   {
     "id": "critique-flow",
     "title": "Critique a user flow",
-    "category": "Critique",
+    "category": "Discovery",
+    "requiresAttachment": true,
     "prompt": "Review this user flow with a product designer lens.\n\n1. Restate the job-to-be-done in one sentence.\n2. Call out friction points that add cognitive load, dead ends, or trust risk.\n3. Suggest 3 concrete improvements ranked by impact vs. effort.\n4. Note any accessibility or mobile constraints I should not ignore.\n\nKeep feedback specific to the screens and copy shown — avoid generic advice."
+  },
+  {
+    "id": "discovery-screen",
+    "title": "Discover opportunities in a screen",
+    "category": "Discovery",
+    "requiresAttachment": true,
+    "prompt": "Look at this screen through a discovery lens.\n\n1. What job is the user trying to finish here?\n2. What assumptions does this UI make about intent, knowledge, or context?\n3. List 3–5 opportunity areas (friction, missing feedback, unclear hierarchy, dead ends).\n4. For each opportunity: why it matters, who it hurts most, and one lightweight next step to validate.\n\nStay grounded in what’s visible — no generic product advice."
   },
   {
     "id": "explore-alts",
     "title": "Explore alternate layouts",
-    "category": "Exploration",
+    "category": "Prototyping",
     "prompt": "Given this screen, propose 3 distinct layout directions that preserve the same goals and content hierarchy.\n\nFor each direction:\n- Name the concept in 3–5 words\n- Describe the visual hierarchy and primary CTA placement\n- Call out what this direction optimizes for (speed, clarity, delight, density)\n- List tradeoffs\n\nDo not default to a card grid. Prefer purposeful composition."
   },
   {
@@ -18,33 +26,9 @@
     "prompt": "Turn this UI into an implementation-ready component spec.\n\nInclude:\n- Purpose and when to use / not use\n- Anatomy (parts and slots)\n- Variants and states (default, hover, focus, disabled, error, loading)\n- Content rules and truncation behavior\n- Accessibility: roles, keyboard, focus order, announcements\n- Token / spacing notes (prefer semantic tokens over raw values)\n- Empty, overflow, and edge cases\n\nWrite for engineers — precise, scannable, no fluff."
   },
   {
-    "id": "a11y-pass",
-    "title": "Accessibility review pass",
-    "category": "Accessibility",
-    "prompt": "Run an accessibility review of this design.\n\nCheck:\n- Color contrast for text and interactive states\n- Focus visibility and keyboard path\n- Touch target size and spacing\n- Labels, error messaging, and helper text\n- Motion: reduce-motion considerations\n- Screen reader naming for icons and custom controls\n\nReturn findings as severity-ranked issues with a suggested fix for each."
-  },
-  {
-    "id": "naming-pass",
-    "title": "Name components & tokens",
-    "category": "Systems",
-    "prompt": "Propose clear naming for the components, variants, and tokens in this design.\n\nGuidelines:\n- Prefer purpose over appearance (e.g. action/primary, not blue-button)\n- Keep names consistent with existing system language where possible\n- Separate component API from visual style tokens\n- Flag anything that looks like a one-off that should become a pattern\n\nOutput a table: current label → proposed name → rationale."
-  },
-  {
-    "id": "empty-states",
-    "title": "Design empty & error states",
-    "category": "Exploration",
-    "prompt": "Design the empty, loading, and error states for this screen.\n\nFor each state:\n- What the user needs to understand\n- Primary recovery action\n- Tone of voice for microcopy (clear, calm, specific)\n- What not to hide (e.g. navigation, context)\n\nKeep visual noise low; one message, one action."
-  },
-  {
-    "id": "critique-visual",
-    "title": "Visual design critique",
-    "category": "Critique",
-    "prompt": "Critique the visual design of this screen.\n\nFocus on:\n- Hierarchy and rhythm\n- Spacing consistency\n- Type scale and line length\n- Color roles (surface, text, accent, feedback)\n- Alignment and optical balance\n\nGive 5 prioritized notes. Each note: observation → why it matters → suggested change."
-  },
-  {
-    "id": "figma-structure",
-    "title": "Structure a Figma file",
-    "category": "Handoff",
-    "prompt": "Recommend a clean Figma file structure for this feature.\n\nCover:\n- Page / section organization\n- Cover + changelog expectations\n- Component vs. instance usage\n- Annotation layer for eng handoff\n- How to show responsive / platform variants\n- What belongs in the design system vs. local to the file\n\nOptimize for a team that reviews in async critique."
+    "id": "pr-design-review",
+    "title": "Review a design PR",
+    "category": "PRs",
+    "prompt": "Review this design pull request as a product designer.\n\nCheck:\n- Does the change match the stated intent and acceptance criteria?\n- Visual regressions vs. the existing system (spacing, type, color, states)\n- Missing states: empty, loading, error, disabled, focus\n- Copy clarity and consistency with product voice\n- Accessibility impact of the change\n\nLeave review comments that are specific, actionable, and prioritized (blocking vs. nit)."
   }
 ]

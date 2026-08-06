@@ -17,10 +17,13 @@ Edit `public/prompts.json`. Each prompt needs:
 {
   "id": "unique-id",
   "title": "Short title",
-  "category": "Critique",
+  "category": "Discovery",
+  "requiresAttachment": true,
   "prompt": "Full prompt text…"
 }
 ```
+
+Set `requiresAttachment: true` to show an **[Insert Screenshot]** badge — a cue that the prompt needs a screenshot attached when used.
 
 ## Hosting
 
