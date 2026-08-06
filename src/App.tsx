@@ -26,9 +26,6 @@ type Prompt = {
   }
 }
 
-const INSERT_PLACEHOLDER_RE =
-  /\[Insert (?:screenshot|link|skill|name|branch)[^\]]*\]/gi
-
 const MARKDOWN_LINK_RE = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g
 
 const INSERT_TITLES: Record<string, string> = {
@@ -106,7 +103,7 @@ function renderInline(text: string, keyPrefix: string): ReactNode[] {
           href={match[2]}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#8CD6E5] underline underline-offset-2 hover:text-[#8CD6E5]/90"
+          className="text-white underline underline-offset-2 hover:text-white/90"
         >
           {match[1]}
         </a>
@@ -152,7 +149,7 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
   const [copied, setCopied] = useState(false)
 
   async function handleCopy() {
-    await copyText(prompt.prompt)
+    await copyText(promptForCopy(prompt.prompt))
     setCopied(true)
     toast.success("Prompt copied")
     window.setTimeout(() => setCopied(false), 1600)
