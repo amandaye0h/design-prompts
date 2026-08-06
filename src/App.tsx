@@ -22,6 +22,8 @@ type Prompt = {
   title: string
   category: string
   prompt: string
+  /** When true, show an [Insert Screenshot] badge — attach a screenshot with the prompt. */
+  requiresAttachment?: boolean
 }
 
 async function copyText(text: string) {
@@ -53,9 +55,20 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
   return (
     <Card className="h-full">
       <CardHeader className="gap-2">
-        <Badge className="w-fit border-transparent bg-primary text-primary-foreground hover:bg-primary/90">
-          {prompt.category}
-        </Badge>
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge className="w-fit border-transparent bg-primary text-primary-foreground hover:bg-primary/90">
+            {prompt.category}
+          </Badge>
+          {prompt.requiresAttachment ? (
+            <Badge
+              variant="outline"
+              className="w-fit border-dashed border-muted-foreground/50 font-normal text-muted-foreground"
+              title="Attach a screenshot when using this prompt"
+            >
+              [Insert Screenshot]
+            </Badge>
+          ) : null}
+        </div>
         <CardTitle className="text-lg">{prompt.title}</CardTitle>
       </CardHeader>
       <CardContent className="flex-1">
