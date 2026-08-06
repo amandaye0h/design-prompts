@@ -146,7 +146,7 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
               href={prompt.suggestedSkill.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#F1BC8E] underline underline-offset-2 hover:text-[#F1BC8E]/90"
+              className="text-white underline underline-offset-2 hover:text-white/90"
             >
               {prompt.suggestedSkill.label}
             </a>
