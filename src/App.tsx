@@ -11,6 +11,14 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 import { Toaster } from "@/components/ui/sonner"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 
@@ -216,6 +224,7 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
       </div>
       <div className="flex shrink-0 items-center border-t border-border/60 px-4 py-4 sm:border-t-0 sm:border-l sm:pl-4">
         <Button
+          data-copy-prompt
           onClick={handleCopy}
           className="w-full bg-white text-black hover:bg-white/90 sm:w-auto"
         >
@@ -239,13 +248,13 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
 const CATEGORIES = [
   "All",
   "Core",
-  "Discovery",
   "PRs",
   "Handoff",
   "Polish",
   "Prototyping",
   "E2E",
   "System",
+  "Discovery",
 ] as const
 
 const CORE_IDS = [
@@ -254,6 +263,7 @@ const CORE_IDS = [
   "polish-feature",
   "prs-generate-description",
   "prs-push-changes",
+  "prototyping-testflight-build",
 ]
 
 export default function App() {
@@ -283,12 +293,27 @@ export default function App() {
         return
       }
 
-      if (!(event.metaKey || event.ctrlKey) || event.key !== "Enter") return
+      if (event.shiftKey && event.code === "Digit1" && !event.metaKey && !event.ctrlKey && !event.altKey) {
+        event.preventDefault()
+        const firstCopy = document.querySelector<HTMLButtonElement>(
+          "[data-copy-prompt]"
+        )
+        firstCopy?.focus()
+        return
+      }
+
+      if (event.key !== "Enter") return
+
+      const goPrevious = event.shiftKey && !event.metaKey && !event.ctrlKey && !event.altKey
+      const goNext =
+        (event.metaKey || event.ctrlKey) && !event.shiftKey && !event.altKey
+
+      if (!goPrevious && !goNext) return
 
       event.preventDefault()
       const index = CATEGORIES.indexOf(category as (typeof CATEGORIES)[number])
       const current = index === -1 ? 0 : index
-      const nextIndex = event.shiftKey
+      const nextIndex = goPrevious
         ? (current - 1 + CATEGORIES.length) % CATEGORIES.length
         : (current + 1) % CATEGORIES.length
       setCategory(CATEGORIES[nextIndex]!)
@@ -325,13 +350,74 @@ export default function App() {
     <div className="min-h-svh bg-background text-foreground">
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-10 sm:px-6 sm:py-14">
         <header className="flex flex-col gap-6">
-          <div className="space-y-3">
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              Design Prompts
-            </h1>
-            <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
-              A prompt library for repeatable workflows
-            </p>
+          <div className="flex items-start justify-between gap-4">
+            <div className="space-y-3">
+              <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+                Design Prompts
+              </h1>
+              <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
+                A prompt library for repeatable workflows
+              </p>
+            </div>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" className="shrink-0">
+                  Shortcuts
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="gap-0">
+                <SheetHeader>
+                  <SheetTitle>Shortcuts</SheetTitle>
+                  <SheetDescription>
+                    Keyboard shortcuts for navigating this page.
+                  </SheetDescription>
+                </SheetHeader>
+                <ul className="flex flex-col gap-4 px-4 pb-4">
+                  <li className="flex items-center justify-between gap-4">
+                    <span className="text-sm text-foreground">
+                      Move to next tab
+                    </span>
+                    <span className="flex shrink-0 items-center gap-1">
+                      <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
+                        ⌘
+                      </kbd>
+                      <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
+                        Enter
+                      </kbd>
+                    </span>
+                  </li>
+                  <li className="flex items-center justify-between gap-4">
+                    <span className="text-sm text-foreground">
+                      Move to previous tab
+                    </span>
+                    <span className="flex shrink-0 items-center gap-1">
+                      <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
+                        ⌘
+                      </kbd>
+                      <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
+                        Shift ⇧
+                      </kbd>
+                      <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
+                        Enter
+                      </kbd>
+                    </span>
+                  </li>
+                  <li className="flex items-center justify-between gap-4">
+                    <span className="text-sm text-foreground">
+                      Focus first Copy prompt
+                    </span>
+                    <span className="flex shrink-0 items-center gap-1">
+                      <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
+                        Shift ⇧
+                      </kbd>
+                      <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
+                        1
+                      </kbd>
+                    </span>
+                  </li>
+                </ul>
+              </SheetContent>
+            </Sheet>
           </div>
 
           <div className="relative max-w-md">
