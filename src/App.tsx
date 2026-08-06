@@ -229,7 +229,7 @@ export default function App() {
 
   const categories = [
     "All",
-    "Key workflows",
+    "Core",
     "PRs",
     "Handoff",
     "Polish",
@@ -237,7 +237,7 @@ export default function App() {
     "E2E",
   ]
 
-  const keyWorkflowIds = [
+  const coreIds = [
     "prs-create-branch",
     "handoff-figma-mcp",
     "polish-feature",
@@ -254,8 +254,8 @@ export default function App() {
         .includes(normalized)
     }
 
-    if (category === "Key workflows") {
-      return keyWorkflowIds
+    if (category === "Core") {
+      return coreIds
         .map((id) => prompts.find((prompt) => prompt.id === id))
         .filter((prompt): prompt is Prompt => Boolean(prompt))
         .filter(matchesSearch)
