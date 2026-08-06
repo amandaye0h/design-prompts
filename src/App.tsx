@@ -66,7 +66,7 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
       <CardFooter>
         <Button
           onClick={handleCopy}
-          className="w-full bg-white text-zinc-950 hover:bg-white/90 sm:w-auto"
+          className="w-full bg-primary text-primary-foreground hover:bg-primary/90 sm:w-auto"
         >
           {copied ? (
             <>
