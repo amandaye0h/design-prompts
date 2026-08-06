@@ -287,8 +287,11 @@ export default function App() {
 
       event.preventDefault()
       const index = CATEGORIES.indexOf(category as (typeof CATEGORIES)[number])
-      const next = CATEGORIES[(index + 1) % CATEGORIES.length]!
-      setCategory(next)
+      const current = index === -1 ? 0 : index
+      const nextIndex = event.shiftKey
+        ? (current - 1 + CATEGORIES.length) % CATEGORIES.length
+        : (current + 1) % CATEGORIES.length
+      setCategory(CATEGORIES[nextIndex]!)
     }
 
     window.addEventListener("keydown", onKeyDown)
