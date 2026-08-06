@@ -24,23 +24,48 @@ type Prompt = {
   prompt: string
 }
 
-const INSERT_SCREENSHOT_RE = /\[Insert screenshot[^\]]*\]/gi
+const INSERT_PLACEHOLDER_RE = /\[Insert (?:screenshot|link|skill)[^\]]*\]/gi
 
-function InsertScreenshotBadge() {
+const INSERT_TITLES: Record<string, string> = {
+  screenshot: "Attach a screenshot when using this prompt",
+  link: "Paste a link when using this prompt",
+  skill: "Attach or name a skill when using this prompt",
+}
+
+function InsertPlaceholderBadge({ label }: { label: string }) {
+  const kind = label.match(/screenshot|link|skill/i)?.[0].toLowerCase() ?? ""
+  const display =
+    kind === "screenshot"
+      ? "Insert Screenshot"
+      : kind === "link"
+        ? "Insert Link"
+        : kind === "skill"
+          ? "Insert Skill"
+          : label.replace(/^\[|\]$/g, "")
+
+  const colorClass =
+    kind === "screenshot"
+      ? "border-transparent bg-purple-500/15 text-purple-400/80"
+      : kind === "skill"
+        ? "border-transparent bg-yellow-500/15 text-yellow-400/80"
+        : kind === "link"
+          ? "border-transparent bg-teal-500/15 text-teal-400/80"
+          : "border-muted-foreground/50 text-muted-foreground"
+
   return (
     <Badge
       variant="outline"
-      className="mx-0.5 inline-flex w-fit translate-y-[-1px] border-dashed border-muted-foreground/50 align-middle font-normal text-muted-foreground"
-      title="Attach a screenshot when using this prompt"
+      className={`mx-0.5 inline-flex w-fit translate-y-[-1px] align-middle font-normal ${colorClass}`}
+      title={INSERT_TITLES[kind] ?? "Fill in this placeholder when using this prompt"}
     >
-      [Insert Screenshot]
+      {display}
     </Badge>
   )
 }
 
 function PromptBody({ text }: { text: string }) {
-  const parts = text.split(INSERT_SCREENSHOT_RE)
-  const matches = text.match(INSERT_SCREENSHOT_RE) ?? []
+  const parts = text.split(INSERT_PLACEHOLDER_RE)
+  const matches = text.match(INSERT_PLACEHOLDER_RE) ?? []
 
   if (matches.length === 0) {
     return <>{text}</>
@@ -51,7 +76,9 @@ function PromptBody({ text }: { text: string }) {
       {parts.map((part, index) => (
         <span key={index}>
           {part}
-          {index < matches.length ? <InsertScreenshotBadge /> : null}
+          {index < matches.length ? (
+            <InsertPlaceholderBadge label={matches[index]!} />
+          ) : null}
         </span>
       ))}
     </>
@@ -166,7 +193,7 @@ export default function App() {
               Design Prompts
             </h1>
             <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
-              Ready-to-copy prompts for critique, exploration, and handoff.
+              Ready-to-copy prompts that speed up workflows for MetaMask designers
             </p>
           </div>
 

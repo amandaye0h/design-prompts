@@ -4,5 +4,17 @@
     "title": "Finding a component",
     "category": "Discovery",
     "prompt": "[Insert screenshot] + Point me to this component in this repo"
+  },
+  {
+    "id": "discovery-slack-spec",
+    "title": "Creating design specs from Slack messages",
+    "category": "Discovery",
+    "prompt": "Read this conversation in this Slack thread [insert link]\nUsing this skill [insert skill], draft a rough feature spec"
+  },
+  {
+    "id": "prs-merge-conflict",
+    "title": "Fix a merge conflict",
+    "category": "PRs",
+    "prompt": "[Insert Screenshot] Fix this merge conflict"
   }
 ]
