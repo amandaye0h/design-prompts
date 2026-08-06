@@ -52,8 +52,8 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
 
   return (
     <Card className="h-full">
-      <CardHeader>
-        <Badge className="w-fit border-transparent bg-teal-500 text-teal-950 hover:bg-teal-500/90">
+      <CardHeader className="gap-2">
+        <Badge className="w-fit border-transparent bg-primary text-primary-foreground hover:bg-primary/90">
           {prompt.category}
         </Badge>
         <CardTitle className="text-lg">{prompt.title}</CardTitle>
@@ -66,7 +66,7 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
       <CardFooter>
         <Button
           onClick={handleCopy}
-          className="w-full bg-teal-500 text-teal-950 hover:bg-teal-500/90 sm:w-auto"
+          className="w-full bg-white text-zinc-950 hover:bg-white/90 sm:w-auto"
         >
           {copied ? (
             <>
@@ -129,7 +129,7 @@ export default function App() {
         <header className="flex flex-col gap-6">
           <div className="space-y-3">
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              Design Prompts
+              Prompt Library
             </h1>
             <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
               Ready-to-copy prompts for critique, exploration, and handoff.
@@ -163,7 +163,7 @@ export default function App() {
             <ToggleGroupItem
               key={item}
               value={item}
-              className="px-3 data-[state=on]:border-teal-500 data-[state=on]:bg-teal-500 data-[state=on]:text-teal-950 data-[state=on]:hover:bg-teal-500/90"
+              className="px-3 data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:hover:bg-primary/90"
             >
               {item}
             </ToggleGroupItem>
