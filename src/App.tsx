@@ -277,7 +277,7 @@ export default function App() {
               Design Prompts
             </h1>
             <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
-              Ready-to-copy prompts that speed up workflows for MetaMask designers
+              A prompt library for repeatable workflows
             </p>
           </div>
 
