@@ -33,7 +33,7 @@
     "id": "prs-push-changes",
     "title": "Push your changes to Github",
     "category": "PRs",
-    "prompt": "• Add and commit the changes\n• Push my local branch to the remote"
+    "prompt": "• Add and commit the changes\n• Push my local branch to the remote\n• Open the PR"
   },
   {
     "id": "discovery-slack-spec",
@@ -84,7 +84,7 @@
     "id": "prototyping-testflight-build",
     "title": "Create a TestFlight build",
     "category": "Prototyping",
-    "prompt": "• Create a TestFlight build using [this workflow](https://github.com/MetaMask/metamask-mobile/actions/workflows/build-and-upload-to-testflight.yml)\n• Use the default workflow from main and all other default presets\n• Set Branch, tag, or SHA to build as [Insert Branch]"
+    "prompt": "• Create a TestFlight build using [this workflow](https://github.com/MetaMask/metamask-mobile/actions/workflows/build-and-upload-to-testflight.yml)\n• Use the default workflow from main and all other default presets\n• Set Branch, tag, or SHA to build as main"
   },
   {
     "id": "system-figma-from-code",
