@@ -312,13 +312,6 @@ export default function App() {
             ))}
           </div>
         )}
-
-        <footer className="pt-4 text-sm text-muted-foreground">
-          Edit <code className="rounded-md bg-muted px-1.5 py-0.5 text-foreground">
-            public/prompts.json
-          </code>{" "}
-          to add or update prompts.
-        </footer>
       </div>
       <Toaster />
     </div>
