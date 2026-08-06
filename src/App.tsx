@@ -20,6 +20,7 @@ type Prompt = {
   category: string
   prompt: string
   badges?: string[]
+  note?: string
   suggestedSkill?: {
     label: string
     url: string
@@ -74,10 +75,22 @@ function InsertPlaceholderBadge({ label }: { label: string }) {
   )
 }
 
+function SlashCommandBadge({ command }: { command: string }) {
+  return (
+    <Badge
+      variant="outline"
+      className="mx-0.5 inline-flex w-fit translate-y-[-1px] border-dashed border-[#F1BC8E]/80 bg-transparent align-middle font-normal text-[#F1BC8E]"
+      title="Invoke this Cursor skill when using this prompt"
+    >
+      {command}
+    </Badge>
+  )
+}
+
 function renderInline(text: string, keyPrefix: string): ReactNode[] {
   const nodes: ReactNode[] = []
   const tokenRe =
-    /\[Insert (?:screenshot|link|skill|name|branch)[^\]]*\]|\[([^\]]+)\]\((https?:\/\/[^)]+)\)/gi
+    /\[Insert (?:screenshot|link|skill|name|branch)[^\]]*\]|\[([^\]]+)\]\((https?:\/\/[^)]+)\)|\/autopilot\b/gi
 
   let lastIndex = 0
   let match: RegExpExecArray | null
@@ -94,6 +107,13 @@ function renderInline(text: string, keyPrefix: string): ReactNode[] {
         <InsertPlaceholderBadge
           key={`${keyPrefix}-insert-${tokenIndex}`}
           label={full}
+        />
+      )
+    } else if (/^\/autopilot$/i.test(full)) {
+      nodes.push(
+        <SlashCommandBadge
+          key={`${keyPrefix}-cmd-${tokenIndex}`}
+          command="/autopilot"
         />
       )
     } else {
@@ -188,6 +208,11 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
             </a>
           </p>
         ) : null}
+        {prompt.note ? (
+          <p className="text-sm text-muted-foreground">
+            Note: {prompt.note}
+          </p>
+        ) : null}
       </div>
       <div className="flex shrink-0 items-center border-t border-border/60 px-4 py-4 sm:border-t-0 sm:border-l sm:pl-4">
         <Button
@@ -230,6 +255,7 @@ export default function App() {
   const categories = [
     "All",
     "Core",
+    "Discovery",
     "PRs",
     "Handoff",
     "Polish",
