@@ -99,7 +99,7 @@
     "id": "prototyping-testflight-build",
     "title": "Create a TestFlight build",
     "category": "Prototyping",
-    "prompt": "• Create a TestFlight build using [this workflow](https://github.com/MetaMask/metamask-mobile/actions/workflows/build-and-upload-to-testflight.yml)\n• Use the default workflow from main and all other default presets\n• Set Branch, tag, or SHA to build as main"
+    "prompt": "• Create a TestFlight build using [this workflow](https://github.com/MetaMask/metamask-mobile/actions/workflows/build-and-upload-to-testflight.yml)\n• Use the default workflow from main and all other default presets\n• Set Branch, tag, or SHA to build as [Insert Branch]"
   },
   {
     "id": "system-figma-from-code",

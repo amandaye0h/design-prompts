@@ -269,11 +269,46 @@ const CORE_IDS = [
   "prototyping-testflight-build",
 ]
 
+function categoryToPath(category: string): string {
+  const base = import.meta.env.BASE_URL
+  if (category === "All") return base
+  return `${base}${category.toLowerCase()}`
+}
+
+function pathToCategory(pathname: string): string {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "")
+  const normalized = pathname.replace(/\/$/, "") || ""
+  if (!normalized || normalized === base) return "All"
+
+  const slug = normalized.slice(base.length).replace(/^\//, "").split("/")[0]?.toLowerCase()
+  if (!slug) return "All"
+
+  return CATEGORIES.find((item) => item.toLowerCase() === slug) ?? "All"
+}
+
+function navigateToCategory(category: string, replace = false) {
+  const nextPath = categoryToPath(category)
+  const current = `${window.location.pathname}${window.location.search}${window.location.hash}`
+  if (current === nextPath || window.location.pathname.replace(/\/$/, "") === nextPath.replace(/\/$/, "")) {
+    return
+  }
+  if (replace) {
+    window.history.replaceState(null, "", nextPath)
+  } else {
+    window.history.pushState(null, "", nextPath)
+  }
+}
+
 export default function App() {
   const [prompts, setPrompts] = useState<Prompt[]>([])
   const [query, setQuery] = useState("")
-  const [category, setCategory] = useState<string>("All")
+  const [category, setCategory] = useState(() => pathToCategory(window.location.pathname))
   const [loadError, setLoadError] = useState(false)
+
+  const selectCategory = (next: string, replace = false) => {
+    setCategory(next)
+    navigateToCategory(next, replace)
+  }
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}prompts.json`)
@@ -283,6 +318,20 @@ export default function App() {
       })
       .then((data: Prompt[]) => setPrompts(data))
       .catch(() => setLoadError(true))
+  }, [])
+
+  useEffect(() => {
+    const matched = pathToCategory(window.location.pathname)
+    setCategory(matched)
+    navigateToCategory(matched, true)
+  }, [])
+
+  useEffect(() => {
+    function onPopState() {
+      setCategory(pathToCategory(window.location.pathname))
+    }
+    window.addEventListener("popstate", onPopState)
+    return () => window.removeEventListener("popstate", onPopState)
   }, [])
 
   useEffect(() => {
@@ -319,7 +368,7 @@ export default function App() {
       const nextIndex = goPrevious
         ? (current - 1 + CATEGORIES.length) % CATEGORIES.length
         : (current + 1) % CATEGORIES.length
-      setCategory(CATEGORIES[nextIndex]!)
+      selectCategory(CATEGORIES[nextIndex]!)
     }
 
     window.addEventListener("keydown", onKeyDown)
@@ -439,7 +488,7 @@ export default function App() {
           type="single"
           value={category}
           onValueChange={(value) => {
-            if (value) setCategory(value)
+            if (value) selectCategory(value)
           }}
           variant="outline"
           size="sm"
