@@ -53,7 +53,7 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
   return (
     <Card className="h-full">
       <CardHeader>
-        <Badge variant="secondary" className="w-fit">
+        <Badge variant="default" className="w-fit">
           {prompt.category}
         </Badge>
         <CardTitle className="text-lg">{prompt.title}</CardTitle>
@@ -98,10 +98,15 @@ export default function App() {
       .catch(() => setLoadError(true))
   }, [])
 
-  const categories = useMemo(
-    () => ["All", ...Array.from(new Set(prompts.map((p) => p.category)))],
-    [prompts]
-  )
+  const categories = [
+    "All",
+    "Discovery",
+    "PRs",
+    "Handoff",
+    "Polish",
+    "Prototyping",
+    "Other",
+  ]
 
   const filtered = useMemo(() => {
     const normalized = query.trim().toLowerCase()
