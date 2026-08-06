@@ -53,7 +53,7 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
   return (
     <Card className="h-full">
       <CardHeader>
-        <Badge variant="default" className="w-fit">
+        <Badge className="w-fit border-transparent bg-teal-500 text-teal-950 hover:bg-teal-500/90">
           {prompt.category}
         </Badge>
         <CardTitle className="text-lg">{prompt.title}</CardTitle>
@@ -64,7 +64,10 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
         </CardDescription>
       </CardContent>
       <CardFooter>
-        <Button onClick={handleCopy} className="w-full sm:w-auto">
+        <Button
+          onClick={handleCopy}
+          className="w-full bg-teal-500 text-teal-950 hover:bg-teal-500/90 sm:w-auto"
+        >
           {copied ? (
             <>
               <CheckIcon data-icon="inline-start" />
@@ -157,7 +160,11 @@ export default function App() {
           aria-label="Prompt categories"
         >
           {categories.map((item) => (
-            <ToggleGroupItem key={item} value={item} className="px-3">
+            <ToggleGroupItem
+              key={item}
+              value={item}
+              className="px-3 data-[state=on]:border-teal-500 data-[state=on]:bg-teal-500 data-[state=on]:text-teal-950 data-[state=on]:hover:bg-teal-500/90"
+            >
               {item}
             </ToggleGroupItem>
           ))}
