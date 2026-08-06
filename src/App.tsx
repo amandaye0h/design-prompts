@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState, type ReactNode } from "react"
 import { CheckIcon, CopyIcon, SearchIcon } from "lucide-react"
 import { toast } from "sonner"
 
@@ -27,17 +27,21 @@ type Prompt = {
 }
 
 const INSERT_PLACEHOLDER_RE =
-  /\[Insert (?:screenshot|link|skill|name)[^\]]*\]/gi
+  /\[Insert (?:screenshot|link|skill|name|branch)[^\]]*\]/gi
+
+const MARKDOWN_LINK_RE = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g
 
 const INSERT_TITLES: Record<string, string> = {
   screenshot: "Attach a screenshot when using this prompt",
   link: "Paste a link when using this prompt",
   skill: "Attach or name a skill when using this prompt",
   name: "Fill in a name when using this prompt",
+  branch: "Fill in a branch, tag, or SHA when using this prompt",
 }
 
 function InsertPlaceholderBadge({ label }: { label: string }) {
-  const kind = label.match(/screenshot|link|skill|name/i)?.[0].toLowerCase() ?? ""
+  const kind =
+    label.match(/screenshot|link|skill|name|branch/i)?.[0].toLowerCase() ?? ""
   const display =
     kind === "screenshot"
       ? "Insert Screenshot"
@@ -47,7 +51,9 @@ function InsertPlaceholderBadge({ label }: { label: string }) {
           ? "Insert Skill"
           : kind === "name"
             ? "Insert Name"
-            : label.replace(/^\[|\]$/g, "")
+            : kind === "branch"
+              ? "Insert Branch"
+              : label.replace(/^\[|\]$/g, "")
 
   const colorClass =
     kind === "screenshot"
@@ -56,7 +62,7 @@ function InsertPlaceholderBadge({ label }: { label: string }) {
         ? "border-[#F1BC8E]/80 text-[#F1BC8E]"
         : kind === "link"
           ? "border-[#8CD6E5]/80 text-[#8CD6E5]"
-          : kind === "name"
+          : kind === "name" || kind === "branch"
             ? "border-[#98C379]/80 text-[#98C379]"
             : "border-muted-foreground/50 text-muted-foreground"
 
@@ -71,26 +77,59 @@ function InsertPlaceholderBadge({ label }: { label: string }) {
   )
 }
 
-function PromptBody({ text }: { text: string }) {
-  const parts = text.split(INSERT_PLACEHOLDER_RE)
-  const matches = text.match(INSERT_PLACEHOLDER_RE) ?? []
+function renderInline(text: string, keyPrefix: string): ReactNode[] {
+  const nodes: ReactNode[] = []
+  const tokenRe =
+    /\[Insert (?:screenshot|link|skill|name|branch)[^\]]*\]|\[([^\]]+)\]\((https?:\/\/[^)]+)\)/gi
 
-  if (matches.length === 0) {
-    return <>{text}</>
+  let lastIndex = 0
+  let match: RegExpExecArray | null
+  let tokenIndex = 0
+
+  while ((match = tokenRe.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      nodes.push(text.slice(lastIndex, match.index))
+    }
+
+    const full = match[0]
+    if (/^\[Insert /i.test(full)) {
+      nodes.push(
+        <InsertPlaceholderBadge
+          key={`${keyPrefix}-insert-${tokenIndex}`}
+          label={full}
+        />
+      )
+    } else {
+      nodes.push(
+        <a
+          key={`${keyPrefix}-link-${tokenIndex}`}
+          href={match[2]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#8CD6E5] underline underline-offset-2 hover:text-[#8CD6E5]/90"
+        >
+          {match[1]}
+        </a>
+      )
+    }
+
+    lastIndex = match.index + full.length
+    tokenIndex += 1
   }
 
-  return (
-    <>
-      {parts.map((part, index) => (
-        <span key={index}>
-          {part}
-          {index < matches.length ? (
-            <InsertPlaceholderBadge label={matches[index]!} />
-          ) : null}
-        </span>
-      ))}
-    </>
-  )
+  if (lastIndex < text.length) {
+    nodes.push(text.slice(lastIndex))
+  }
+
+  return nodes
+}
+
+function PromptBody({ text }: { text: string }) {
+  return <>{renderInline(text, "prompt")}</>
+}
+
+function promptForCopy(text: string) {
+  return text.replace(MARKDOWN_LINK_RE, "$1 ($2)")
 }
 
 async function copyText(text: string) {
