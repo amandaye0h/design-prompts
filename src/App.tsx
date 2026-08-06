@@ -50,13 +50,13 @@ function InsertPlaceholderBadge({ label }: { label: string }) {
 
   const colorClass =
     kind === "screenshot"
-      ? "border-purple-500/40 text-purple-400/80"
+      ? "border-[#BDA6F7]/80 text-[#BDA6F7]"
       : kind === "skill"
-        ? "border-yellow-500/40 text-yellow-400/80"
+        ? "border-[#F1BC8E]/80 text-[#F1BC8E]"
         : kind === "link"
-          ? "border-teal-500/40 text-teal-400/80"
+          ? "border-[#8CD6E5]/80 text-[#8CD6E5]"
           : kind === "name"
-            ? "border-sky-500/40 text-sky-400/80"
+            ? "border-[#98C379]/80 text-[#98C379]"
             : "border-muted-foreground/50 text-muted-foreground"
 
   return (
