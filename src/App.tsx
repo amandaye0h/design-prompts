@@ -283,7 +283,7 @@ export default function App() {
         return
       }
 
-      if (!(event.metaKey || event.ctrlKey) || event.key !== "\\") return
+      if (!(event.metaKey || event.ctrlKey) || event.key !== "Enter") return
 
       event.preventDefault()
       const index = CATEGORIES.indexOf(category as (typeof CATEGORIES)[number])
