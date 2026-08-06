@@ -332,10 +332,6 @@ export default function App() {
             ))}
           </div>
         )}
-
-        <footer className="pt-6 text-sm text-muted-foreground">
-          Last updated: {__LAST_UPDATED__}
-        </footer>
       </div>
       <Toaster />
     </div>
