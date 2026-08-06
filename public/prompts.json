@@ -1,5 +1,23 @@
 [
   {
+    "id": "prs-create-branch",
+    "title": "Create a branch",
+    "category": "PRs",
+    "prompt": "• Create a branch based off of main called [Insert name].\n• Make sure you've pulled the latest changes from main."
+  },
+  {
+    "id": "prs-generate-description",
+    "title": "Generate a description",
+    "category": "PRs",
+    "prompt": "• Create a PR description based on the changes in this branch\n• Make sure you follow the template in the repo\n• Let me review the description first. Do not push until I approve it."
+  },
+  {
+    "id": "prs-push-changes",
+    "title": "Push your changes to Github",
+    "category": "PRs",
+    "prompt": "• Add and commit the changes\n• Push my local branch to the remote"
+  },
+  {
     "id": "discovery-screen",
     "title": "Finding a component",
     "category": "Polish",
@@ -18,23 +36,8 @@
   {
     "id": "prs-merge-conflict",
     "title": "Fix a merge conflict",
-    "category": "PRs",
-    "badges": ["E2E"],
+    "category": "E2E",
     "prompt": "• Fix this merge conflict [Insert Screenshot]"
-  },
-  {
-    "id": "prs-create-branch",
-    "title": "Create a branch",
-    "category": "PRs",
-    "badges": ["Core"],
-    "prompt": "• Create a branch based off of main called [Insert name].\n• Make sure you've pulled the latest changes from main."
-  },
-  {
-    "id": "prs-push-changes",
-    "title": "Push your changes to Github",
-    "category": "PRs",
-    "badges": ["Core"],
-    "prompt": "• Add and commit the changes\n• Push my local branch to the remote"
   },
   {
     "id": "handoff-figma-mcp",

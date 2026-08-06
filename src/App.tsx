@@ -198,6 +198,7 @@ export default function App() {
     "Handoff",
     "Polish",
     "Prototyping",
+    "E2E",
     "Other",
   ]
 
@@ -215,7 +216,7 @@ export default function App() {
 
   return (
     <div className="min-h-svh bg-background text-foreground">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 sm:py-14">
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-10 sm:px-6 sm:py-14">
         <header className="flex flex-col gap-6">
           <div className="space-y-3">
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
