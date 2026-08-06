@@ -229,6 +229,7 @@ export default function App() {
 
   const categories = [
     "All",
+    "Key workflows",
     "PRs",
     "Handoff",
     "Polish",
@@ -236,15 +237,34 @@ export default function App() {
     "E2E",
   ]
 
+  const keyWorkflowIds = [
+    "prs-create-branch",
+    "handoff-figma-mcp",
+    "polish-feature",
+    "prs-generate-description",
+    "prs-push-changes",
+  ]
+
   const filtered = useMemo(() => {
     const normalized = query.trim().toLowerCase()
-    return prompts.filter((prompt) => {
-      const inCategory = category === "All" || prompt.category === category
-      if (!inCategory) return false
+    const matchesSearch = (prompt: Prompt) => {
       if (!normalized) return true
       return `${prompt.title} ${prompt.category} ${prompt.prompt}`
         .toLowerCase()
         .includes(normalized)
+    }
+
+    if (category === "Key workflows") {
+      return keyWorkflowIds
+        .map((id) => prompts.find((prompt) => prompt.id === id))
+        .filter((prompt): prompt is Prompt => Boolean(prompt))
+        .filter(matchesSearch)
+    }
+
+    return prompts.filter((prompt) => {
+      const inCategory = category === "All" || prompt.category === category
+      if (!inCategory) return false
+      return matchesSearch(prompt)
     })
   }, [prompts, query, category])
 
