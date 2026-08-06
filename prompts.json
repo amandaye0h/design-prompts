@@ -1,0 +1,110 @@
+[
+  {
+    "id": "prs-create-branch",
+    "title": "Create a branch",
+    "category": "PRs",
+    "prompt": "• Create a branch based off of main called [Insert Branch].\n• Make sure you've pulled the latest changes from main."
+  },
+  {
+    "id": "handoff-figma-mcp",
+    "title": "Implement a Figma design",
+    "category": "Handoff",
+    "prompt": "• Use figma-design-to-code to implement this Figma design: [Insert Link]"
+  },
+  {
+    "id": "discovery-screen",
+    "title": "Find a component",
+    "category": "Polish",
+    "prompt": "• Point me to this component in the repo [Insert Screenshot]"
+  },
+  {
+    "id": "polish-feature",
+    "title": "Polish a feature",
+    "category": "Polish",
+    "prompt": "Examples:\n• Update the padding from 4px to 8px for this component [Insert Screenshot]\n• Update the typography from body-md to body-sm [Insert Screenshot]"
+  },
+  {
+    "id": "polish-align-patterns",
+    "title": "Align design patterns",
+    "category": "Polish",
+    "prompt": "• Apply the pattern from image 1 to image 2\n• [Insert Screenshot 1] and [Insert Screenshot 2]",
+    "note": "Agent will need sufficient context of designs in Screenshot 1"
+  },
+  {
+    "id": "prs-generate-description",
+    "title": "Generate a description",
+    "category": "PRs",
+    "prompt": "• Create a PR description based on the changes in this branch\n• Make sure you follow the template in the repo\n• Let me review the description first. Do not push until I approve it."
+  },
+  {
+    "id": "prs-push-changes",
+    "title": "Create a PR",
+    "category": "PRs",
+    "prompt": "• Add and commit the changes\n• Run /mms-create-pr",
+    "note": "MetaMask Skills must be installed"
+  },
+  {
+    "id": "prs-install-metamask-skills",
+    "title": "Install MetaMask Skills",
+    "category": "PRs",
+    "prompt": "• Run yarn install and yarn skills"
+  },
+  {
+    "id": "discovery-slack-spec",
+    "title": "Create design specs from Slack messages",
+    "category": "Discovery",
+    "prompt": "• Read this conversation in this Slack thread [insert link]\n• Using this skill [insert skill], draft a rough feature spec",
+    "suggestedSkill": {
+      "label": "write-spec",
+      "url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/write-spec/SKILL.md"
+    }
+  },
+  {
+    "id": "discovery-competitive-brief",
+    "title": "Create a competitive brief",
+    "category": "Discovery",
+    "prompt": "• Use this skill [Insert Skill]\n• Evaluate MetaMask's feature against Product 1, Product 2 and Product 3",
+    "suggestedSkill": {
+      "label": "competitive-brief",
+      "url": "https://github.com/anthropics/knowledge-work-plugins/blob/main/product-management/skills/competitive-brief/SKILL.md"
+    }
+  },
+  {
+    "id": "e2e-babysit-pr",
+    "title": "Babysit a PR",
+    "category": "E2E",
+    "prompt": "• Use /autopilot\n• Babysit [Insert Link]\n• Keep looping until mergeable + green CI + comments triaged",
+    "note": "Use with extreme caution"
+  },
+  {
+    "id": "prs-merge-conflict",
+    "title": "Fix a merge conflict",
+    "category": "E2E",
+    "prompt": "• Fix this merge conflict [Insert Screenshot]"
+  },
+  {
+    "id": "e2e-resolve-failures",
+    "title": "Resolve E2E test failures",
+    "category": "E2E",
+    "prompt": "• Fix this issue [Insert Screenshot]"
+  },
+
+  {
+    "id": "prototyping-test-animations",
+    "title": "Test animations",
+    "category": "Prototyping",
+    "prompt": "• Apply these specs to this component [Insert Link]"
+  },
+  {
+    "id": "prototyping-testflight-build",
+    "title": "Create a TestFlight build",
+    "category": "Prototyping",
+    "prompt": "• Create a TestFlight build using [this workflow](https://github.com/MetaMask/metamask-mobile/actions/workflows/build-and-upload-to-testflight.yml)\n• Use the default workflow from main and all other default presets\n• Set Branch, tag, or SHA to build as main"
+  },
+  {
+    "id": "system-figma-from-code",
+    "title": "Generate a Figma component from code",
+    "category": "System",
+    "prompt": "• Use [this skill](https://github.com/MetaMask/metamask-design-system/pull/1234) from the MetaMask Design System repo\n• Create this component [Insert Link] in this Figma this page [Insert Link]"
+  }
+]
