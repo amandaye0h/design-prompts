@@ -236,10 +236,30 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
   )
 }
 
+const CATEGORIES = [
+  "All",
+  "Core",
+  "Discovery",
+  "PRs",
+  "Handoff",
+  "Polish",
+  "Prototyping",
+  "E2E",
+  "System",
+] as const
+
+const CORE_IDS = [
+  "prs-create-branch",
+  "handoff-figma-mcp",
+  "polish-feature",
+  "prs-generate-description",
+  "prs-push-changes",
+]
+
 export default function App() {
   const [prompts, setPrompts] = useState<Prompt[]>([])
   const [query, setQuery] = useState("")
-  const [category, setCategory] = useState("All")
+  const [category, setCategory] = useState<string>("All")
   const [loadError, setLoadError] = useState(false)
 
   useEffect(() => {
@@ -252,25 +272,28 @@ export default function App() {
       .catch(() => setLoadError(true))
   }, [])
 
-  const categories = [
-    "All",
-    "Core",
-    "Discovery",
-    "PRs",
-    "Handoff",
-    "Polish",
-    "Prototyping",
-    "E2E",
-    "System",
-  ]
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      const target = event.target as HTMLElement | null
+      if (
+        target?.tagName === "INPUT" ||
+        target?.tagName === "TEXTAREA" ||
+        target?.isContentEditable
+      ) {
+        return
+      }
 
-  const coreIds = [
-    "prs-create-branch",
-    "handoff-figma-mcp",
-    "polish-feature",
-    "prs-generate-description",
-    "prs-push-changes",
-  ]
+      if (!(event.metaKey || event.ctrlKey) || event.key !== "\\") return
+
+      event.preventDefault()
+      const index = CATEGORIES.indexOf(category as (typeof CATEGORIES)[number])
+      const next = CATEGORIES[(index + 1) % CATEGORIES.length]!
+      setCategory(next)
+    }
+
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [category])
 
   const filtered = useMemo(() => {
     const normalized = query.trim().toLowerCase()
@@ -282,7 +305,7 @@ export default function App() {
     }
 
     if (category === "Core") {
-      return coreIds
+      return CORE_IDS
         .map((id) => prompts.find((prompt) => prompt.id === id))
         .filter((prompt): prompt is Prompt => Boolean(prompt))
         .filter(matchesSearch)
@@ -331,7 +354,7 @@ export default function App() {
           className="flex flex-wrap justify-start gap-2"
           aria-label="Prompt categories"
         >
-          {categories.map((item) => (
+          {CATEGORIES.map((item) => (
             <ToggleGroupItem
               key={item}
               value={item}
