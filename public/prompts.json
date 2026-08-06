@@ -31,9 +31,15 @@
   },
   {
     "id": "prs-push-changes",
-    "title": "Push your changes to Github",
+    "title": "Create a PR",
     "category": "PRs",
-    "prompt": "• Add and commit the changes\n• Push my local branch to the remote\n• Open the PR"
+    "prompt": "• Add and commit the changes\n• Run /mms-create-pr\n• Open the PR"
+  },
+  {
+    "id": "prs-install-metamask-skills",
+    "title": "Install MetaMask Skills",
+    "category": "PRs",
+    "prompt": "• Run yarn install and yarn skills"
   },
   {
     "id": "discovery-slack-spec",

@@ -98,7 +98,7 @@ function SlashCommandBadge({ command }: { command: string }) {
 function renderInline(text: string, keyPrefix: string): ReactNode[] {
   const nodes: ReactNode[] = []
   const tokenRe =
-    /\[Insert (?:screenshot|link|skill|name|branch)[^\]]*\]|\[([^\]]+)\]\((https?:\/\/[^)]+)\)|\/autopilot\b/gi
+    /\[Insert (?:screenshot|link|skill|name|branch)[^\]]*\]|\[([^\]]+)\]\((https?:\/\/[^)]+)\)|\/[a-z][\w-]*/gi
 
   let lastIndex = 0
   let match: RegExpExecArray | null
@@ -117,11 +117,11 @@ function renderInline(text: string, keyPrefix: string): ReactNode[] {
           label={full}
         />
       )
-    } else if (/^\/autopilot$/i.test(full)) {
+    } else if (/^\/[a-z][\w-]*$/i.test(full)) {
       nodes.push(
         <SlashCommandBadge
           key={`${keyPrefix}-cmd-${tokenIndex}`}
-          command="/autopilot"
+          command={full}
         />
       )
     } else {
