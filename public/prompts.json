@@ -3,32 +3,12 @@
     "id": "critique-flow",
     "title": "Critique a user flow",
     "category": "Discovery",
-    "requiresAttachment": true,
-    "prompt": "Review this user flow with a product designer lens.\n\n1. Restate the job-to-be-done in one sentence.\n2. Call out friction points that add cognitive load, dead ends, or trust risk.\n3. Suggest 3 concrete improvements ranked by impact vs. effort.\n4. Note any accessibility or mobile constraints I should not ignore.\n\nKeep feedback specific to the screens and copy shown — avoid generic advice."
+    "prompt": "[Insert screenshot] + Review this user flow with a product designer lens.\n\n1. Restate the job-to-be-done in one sentence.\n2. Call out friction points that add cognitive load, dead ends, or trust risk.\n3. Suggest 3 concrete improvements ranked by impact vs. effort.\n4. Note any accessibility or mobile constraints I should not ignore.\n\nKeep feedback specific to the screens and copy shown — avoid generic advice."
   },
   {
     "id": "discovery-screen",
-    "title": "Discover opportunities in a screen",
+    "title": "Finding a component",
     "category": "Discovery",
-    "requiresAttachment": true,
-    "prompt": "Look at this screen through a discovery lens.\n\n1. What job is the user trying to finish here?\n2. What assumptions does this UI make about intent, knowledge, or context?\n3. List 3–5 opportunity areas (friction, missing feedback, unclear hierarchy, dead ends).\n4. For each opportunity: why it matters, who it hurts most, and one lightweight next step to validate.\n\nStay grounded in what’s visible — no generic product advice."
-  },
-  {
-    "id": "explore-alts",
-    "title": "Explore alternate layouts",
-    "category": "Prototyping",
-    "prompt": "Given this screen, propose 3 distinct layout directions that preserve the same goals and content hierarchy.\n\nFor each direction:\n- Name the concept in 3–5 words\n- Describe the visual hierarchy and primary CTA placement\n- Call out what this direction optimizes for (speed, clarity, delight, density)\n- List tradeoffs\n\nDo not default to a card grid. Prefer purposeful composition."
-  },
-  {
-    "id": "component-spec",
-    "title": "Write a component spec",
-    "category": "Handoff",
-    "prompt": "Turn this UI into an implementation-ready component spec.\n\nInclude:\n- Purpose and when to use / not use\n- Anatomy (parts and slots)\n- Variants and states (default, hover, focus, disabled, error, loading)\n- Content rules and truncation behavior\n- Accessibility: roles, keyboard, focus order, announcements\n- Token / spacing notes (prefer semantic tokens over raw values)\n- Empty, overflow, and edge cases\n\nWrite for engineers — precise, scannable, no fluff."
-  },
-  {
-    "id": "pr-design-review",
-    "title": "Review a design PR",
-    "category": "PRs",
-    "prompt": "Review this design pull request as a product designer.\n\nCheck:\n- Does the change match the stated intent and acceptance criteria?\n- Visual regressions vs. the existing system (spacing, type, color, states)\n- Missing states: empty, loading, error, disabled, focus\n- Copy clarity and consistency with product voice\n- Accessibility impact of the change\n\nLeave review comments that are specific, actionable, and prioritized (blocking vs. nit)."
+    "prompt": "[Insert screenshot] + Point me to this component in this repo"
   }
 ]

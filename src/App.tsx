@@ -22,8 +22,40 @@ type Prompt = {
   title: string
   category: string
   prompt: string
-  /** When true, show an [Insert Screenshot] badge — attach a screenshot with the prompt. */
-  requiresAttachment?: boolean
+}
+
+const INSERT_SCREENSHOT_RE = /\[Insert screenshot[^\]]*\]/gi
+
+function InsertScreenshotBadge() {
+  return (
+    <Badge
+      variant="outline"
+      className="mx-0.5 inline-flex w-fit translate-y-[-1px] border-dashed border-muted-foreground/50 align-middle font-normal text-muted-foreground"
+      title="Attach a screenshot when using this prompt"
+    >
+      [Insert Screenshot]
+    </Badge>
+  )
+}
+
+function PromptBody({ text }: { text: string }) {
+  const parts = text.split(INSERT_SCREENSHOT_RE)
+  const matches = text.match(INSERT_SCREENSHOT_RE) ?? []
+
+  if (matches.length === 0) {
+    return <>{text}</>
+  }
+
+  return (
+    <>
+      {parts.map((part, index) => (
+        <span key={index}>
+          {part}
+          {index < matches.length ? <InsertScreenshotBadge /> : null}
+        </span>
+      ))}
+    </>
+  )
 }
 
 async function copyText(text: string) {
@@ -55,25 +87,14 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
   return (
     <Card className="h-full">
       <CardHeader className="gap-2">
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge className="w-fit border-transparent bg-primary text-primary-foreground hover:bg-primary/90">
-            {prompt.category}
-          </Badge>
-          {prompt.requiresAttachment ? (
-            <Badge
-              variant="outline"
-              className="w-fit border-dashed border-muted-foreground/50 font-normal text-muted-foreground"
-              title="Attach a screenshot when using this prompt"
-            >
-              [Insert Screenshot]
-            </Badge>
-          ) : null}
-        </div>
+        <Badge className="w-fit border-transparent bg-primary text-primary-foreground hover:bg-primary/90">
+          {prompt.category}
+        </Badge>
         <CardTitle className="text-lg">{prompt.title}</CardTitle>
       </CardHeader>
       <CardContent className="flex-1">
         <CardDescription className="whitespace-pre-wrap text-sm leading-relaxed">
-          {prompt.prompt}
+          <PromptBody text={prompt.prompt} />
         </CardDescription>
       </CardContent>
       <CardFooter>
