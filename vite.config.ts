@@ -6,11 +6,14 @@ import { fileURLToPath } from "url"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const lastUpdated = new Date().toLocaleDateString("en-US", {
+const lastUpdated = new Date().toLocaleString("en-US", {
   weekday: "long",
   month: "long",
   day: "numeric",
   year: "numeric",
+  hour: "numeric",
+  minute: "2-digit",
+  hour12: true,
   timeZone: "Asia/Singapore",
 })
 
