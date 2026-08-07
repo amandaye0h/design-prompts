@@ -6,6 +6,12 @@
     "prompt": "• Create a branch based off of main called [Insert Branch].\n• Make sure you've pulled the latest changes from main."
   },
   {
+    "id": "prs-checkout-branch",
+    "title": "Checkout another branch",
+    "category": "PRs",
+    "prompt": "• Run git fetch\n• Check out this branch [Insert Branch]"
+  },
+  {
     "id": "handoff-figma-mcp",
     "title": "Implement a Figma design",
     "category": "Handoff",
