@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react"
-import { CheckIcon, CopyIcon, SearchIcon } from "lucide-react"
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
+import { CheckIcon, CopyIcon, SearchIcon, StarIcon } from "lucide-react"
 import { toast } from "sonner"
 
 import { Badge } from "@/components/ui/badge"
@@ -176,14 +176,65 @@ async function copyText(text: string) {
   }
 }
 
+const STARRED_KEY = "design-prompts:starred"
+const STARRED_CHANGE_EVENT = "design-prompts:starred-change"
+
+function readStarredIds(): Set<string> {
+  try {
+    const raw = localStorage.getItem(STARRED_KEY)
+    if (!raw) return new Set()
+    const parsed = JSON.parse(raw) as unknown
+    if (!Array.isArray(parsed)) return new Set()
+    return new Set(parsed.filter((id): id is string => typeof id === "string"))
+  } catch {
+    return new Set()
+  }
+}
+
+function writeStarredIds(ids: Set<string>) {
+  localStorage.setItem(STARRED_KEY, JSON.stringify([...ids]))
+  window.dispatchEvent(new Event(STARRED_CHANGE_EVENT))
+}
+
+function toggleStarred(id: string): boolean {
+  const ids = readStarredIds()
+  if (ids.has(id)) {
+    ids.delete(id)
+    writeStarredIds(ids)
+    return false
+  }
+  ids.add(id)
+  writeStarredIds(ids)
+  return true
+}
+
 function PromptCard({ prompt }: { prompt: Prompt }) {
   const [copied, setCopied] = useState(false)
+  const [starred, setStarred] = useState(() => readStarredIds().has(prompt.id))
+
+  useEffect(() => {
+    function syncStarred() {
+      setStarred(readStarredIds().has(prompt.id))
+    }
+    window.addEventListener(STARRED_CHANGE_EVENT, syncStarred)
+    window.addEventListener("storage", syncStarred)
+    return () => {
+      window.removeEventListener(STARRED_CHANGE_EVENT, syncStarred)
+      window.removeEventListener("storage", syncStarred)
+    }
+  }, [prompt.id])
 
   async function handleCopy() {
     await copyText(promptForCopy(prompt.prompt))
     setCopied(true)
     toast.success("Prompt copied")
     window.setTimeout(() => setCopied(false), 1600)
+  }
+
+  function handleStar() {
+    const next = toggleStarred(prompt.id)
+    setStarred(next)
+    toast.success(next ? "Added to favorites" : "Removed from favorites")
   }
 
   return (
@@ -225,23 +276,26 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
           </p>
         ) : null}
       </div>
-      <div className="flex shrink-0 items-center border-t border-border/60 px-4 py-4 sm:border-t-0 sm:border-l sm:pl-4">
+      <div className="flex shrink-0 items-center gap-2 border-t border-border/60 px-4 py-4 sm:border-t-0 sm:border-l sm:pl-4">
+        <Button
+          onClick={handleStar}
+          size="icon"
+          variant="outline"
+          aria-label={starred ? "Unstar prompt" : "Star prompt"}
+          aria-pressed={starred}
+          className="border-border bg-transparent hover:bg-transparent"
+        >
+          <StarIcon className={starred ? "fill-current" : undefined} />
+        </Button>
         <Button
           data-copy-prompt
           onClick={handleCopy}
-          className="w-full bg-white text-black hover:bg-white/90 sm:w-auto"
+          size="icon"
+          variant="outline"
+          aria-label={copied ? "Copied" : "Copy prompt"}
+          className="border-border bg-transparent hover:bg-transparent"
         >
-          {copied ? (
-            <>
-              <CheckIcon data-icon="inline-start" />
-              Copied
-            </>
-          ) : (
-            <>
-              <CopyIcon data-icon="inline-start" />
-              Copy prompt
-            </>
-          )}
+          {copied ? <CheckIcon /> : <CopyIcon />}
         </Button>
       </div>
     </Card>
@@ -250,7 +304,7 @@ function PromptCard({ prompt }: { prompt: Prompt }) {
 
 const CATEGORIES = [
   "All",
-  "Core",
+  "Favorites",
   "PRs",
   "Handoff",
   "Polish",
@@ -260,14 +314,10 @@ const CATEGORIES = [
   "Discovery",
 ] as const
 
-const CORE_IDS = [
-  "prs-create-branch",
-  "handoff-figma-mcp",
-  "polish-feature",
-  "prs-generate-description",
+const FREQUENTLY_USED_IDS = [
   "prs-push-changes",
   "prototyping-testflight-build",
-]
+] as const
 
 function categoryToPath(category: string): string {
   const base = import.meta.env.BASE_URL
@@ -304,6 +354,8 @@ export default function App() {
   const [query, setQuery] = useState("")
   const [category, setCategory] = useState(() => pathToCategory(window.location.pathname))
   const [loadError, setLoadError] = useState(false)
+  const [starredIds, setStarredIds] = useState(() => readStarredIds())
+  const searchRef = useRef<HTMLInputElement>(null)
 
   const selectCategory = (next: string, replace = false) => {
     setCategory(next)
@@ -335,7 +387,55 @@ export default function App() {
   }, [])
 
   useEffect(() => {
+    function syncStarred() {
+      setStarredIds(readStarredIds())
+    }
+    window.addEventListener(STARRED_CHANGE_EVENT, syncStarred)
+    window.addEventListener("storage", syncStarred)
+    return () => {
+      window.removeEventListener(STARRED_CHANGE_EVENT, syncStarred)
+      window.removeEventListener("storage", syncStarred)
+    }
+  }, [])
+
+  const visibleCategories = useMemo(
+    () =>
+      CATEGORIES.filter(
+        (item) => item !== "Favorites" || starredIds.size > 0
+      ),
+    [starredIds]
+  )
+
+  useEffect(() => {
+    if (category === "Favorites" && starredIds.size === 0) {
+      selectCategory("All", true)
+    }
+  }, [category, starredIds])
+
+  useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
+      if (
+        event.key === "/" &&
+        (event.metaKey || event.ctrlKey) &&
+        !event.shiftKey &&
+        !event.altKey
+      ) {
+        event.preventDefault()
+        searchRef.current?.focus()
+        searchRef.current?.select()
+        return
+      }
+
+      if (
+        event.key === "Escape" &&
+        document.activeElement === searchRef.current
+      ) {
+        event.preventDefault()
+        setQuery("")
+        searchRef.current?.blur()
+        return
+      }
+
       const target = event.target as HTMLElement | null
       if (
         target?.tagName === "INPUT" ||
@@ -363,17 +463,19 @@ export default function App() {
       if (!goPrevious && !goNext) return
 
       event.preventDefault()
-      const index = CATEGORIES.indexOf(category as (typeof CATEGORIES)[number])
+      const index = visibleCategories.indexOf(
+        category as (typeof CATEGORIES)[number]
+      )
       const current = index === -1 ? 0 : index
       const nextIndex = goPrevious
-        ? (current - 1 + CATEGORIES.length) % CATEGORIES.length
-        : (current + 1) % CATEGORIES.length
-      selectCategory(CATEGORIES[nextIndex]!)
+        ? (current - 1 + visibleCategories.length) % visibleCategories.length
+        : (current + 1) % visibleCategories.length
+      selectCategory(visibleCategories[nextIndex]!)
     }
 
     window.addEventListener("keydown", onKeyDown)
     return () => window.removeEventListener("keydown", onKeyDown)
-  }, [category])
+  }, [category, visibleCategories])
 
   const filtered = useMemo(() => {
     const normalized = query.trim().toLowerCase()
@@ -384,19 +486,35 @@ export default function App() {
         .includes(normalized)
     }
 
-    if (category === "Core") {
-      return CORE_IDS
-        .map((id) => prompts.find((prompt) => prompt.id === id))
-        .filter((prompt): prompt is Prompt => Boolean(prompt))
-        .filter(matchesSearch)
-    }
-
     return prompts.filter((prompt) => {
-      const inCategory = category === "All" || prompt.category === category
+      const inCategory =
+        category === "All"
+          ? true
+          : category === "Favorites"
+            ? starredIds.has(prompt.id)
+            : prompt.category === category
       if (!inCategory) return false
       return matchesSearch(prompt)
     })
-  }, [prompts, query, category])
+  }, [prompts, query, category, starredIds])
+
+  const showFrequentlyUsed =
+    category === "All" && query.trim() === "" && filtered.length > 0
+
+  const frequentlyUsed = useMemo(() => {
+    if (!showFrequentlyUsed) return []
+    const byId = new Map(prompts.map((prompt) => [prompt.id, prompt]))
+    return FREQUENTLY_USED_IDS.flatMap((id) => {
+      const prompt = byId.get(id)
+      return prompt ? [prompt] : []
+    })
+  }, [prompts, showFrequentlyUsed])
+
+  const remaining = useMemo(() => {
+    if (!showFrequentlyUsed) return filtered
+    const frequentIds = new Set<string>(FREQUENTLY_USED_IDS)
+    return filtered.filter((prompt) => !frequentIds.has(prompt.id))
+  }, [filtered, showFrequentlyUsed])
 
   return (
     <div className="min-h-svh bg-background text-foreground">
@@ -456,7 +574,7 @@ export default function App() {
                   </li>
                   <li className="flex items-center justify-between gap-4">
                     <span className="text-sm text-foreground">
-                      Focus first Copy prompt
+                      Focus first copy button
                     </span>
                     <span className="flex shrink-0 items-center gap-1">
                       <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
@@ -464,6 +582,29 @@ export default function App() {
                       </kbd>
                       <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
                         1
+                      </kbd>
+                    </span>
+                  </li>
+                  <li className="flex items-center justify-between gap-4">
+                    <span className="text-sm text-foreground">
+                      Focus search
+                    </span>
+                    <span className="flex shrink-0 items-center gap-1">
+                      <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
+                        ⌘
+                      </kbd>
+                      <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
+                        /
+                      </kbd>
+                    </span>
+                  </li>
+                  <li className="flex items-center justify-between gap-4">
+                    <span className="text-sm text-foreground">
+                      Clear and leave search
+                    </span>
+                    <span className="flex shrink-0 items-center gap-1">
+                      <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
+                        Esc
                       </kbd>
                     </span>
                   </li>
@@ -475,6 +616,7 @@ export default function App() {
           <div className="relative max-w-md">
             <SearchIcon className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
+              ref={searchRef}
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search prompts…"
@@ -495,7 +637,7 @@ export default function App() {
           className="flex flex-wrap justify-start gap-2"
           aria-label="Prompt categories"
         >
-          {CATEGORIES.map((item) => (
+          {visibleCategories.map((item) => (
             <ToggleGroupItem
               key={item}
               value={item}
@@ -514,8 +656,28 @@ export default function App() {
           </p>
         ) : filtered.length === 0 ? (
           <p className="text-sm text-muted-foreground">
-            No prompts match that search.
+            {category === "Favorites"
+              ? "No favorites yet. Star a prompt to save it here."
+              : "No prompts match that search."}
           </p>
+        ) : showFrequentlyUsed ? (
+          <div className="flex flex-col gap-8">
+            <section className="flex flex-col gap-3">
+              <h2 className="text-sm font-medium text-muted-foreground">
+                Frequent
+              </h2>
+              <div className="flex flex-col gap-3">
+                {frequentlyUsed.map((prompt) => (
+                  <PromptCard key={prompt.id} prompt={prompt} />
+                ))}
+              </div>
+            </section>
+            <section className="flex flex-col gap-3">
+              {remaining.map((prompt) => (
+                <PromptCard key={prompt.id} prompt={prompt} />
+              ))}
+            </section>
+          </div>
         ) : (
           <div className="flex flex-col gap-3">
             {filtered.map((prompt) => (
