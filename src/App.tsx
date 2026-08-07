@@ -431,7 +431,6 @@ export default function App() {
         document.activeElement === searchRef.current
       ) {
         event.preventDefault()
-        setQuery("")
         searchRef.current?.blur()
         return
       }
@@ -445,12 +444,21 @@ export default function App() {
         return
       }
 
-      if (event.shiftKey && event.code === "Digit1" && !event.metaKey && !event.ctrlKey && !event.altKey) {
+      if (
+        event.shiftKey &&
+        !event.metaKey &&
+        !event.ctrlKey &&
+        !event.altKey &&
+        (event.code === "Digit1" || event.code === "Digit2")
+      ) {
         event.preventDefault()
-        const firstCopy = document.querySelector<HTMLButtonElement>(
+        const index = event.code === "Digit1" ? 0 : 1
+        const copyButtons = document.querySelectorAll<HTMLButtonElement>(
           "[data-copy-prompt]"
         )
-        firstCopy?.focus()
+        const button = copyButtons[index]
+        button?.focus()
+        button?.click()
         return
       }
 
@@ -574,7 +582,7 @@ export default function App() {
                   </li>
                   <li className="flex items-center justify-between gap-4">
                     <span className="text-sm text-foreground">
-                      Focus first copy button
+                      Copy first prompt
                     </span>
                     <span className="flex shrink-0 items-center gap-1">
                       <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
@@ -582,6 +590,19 @@ export default function App() {
                       </kbd>
                       <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
                         1
+                      </kbd>
+                    </span>
+                  </li>
+                  <li className="flex items-center justify-between gap-4">
+                    <span className="text-sm text-foreground">
+                      Copy second prompt
+                    </span>
+                    <span className="flex shrink-0 items-center gap-1">
+                      <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
+                        Shift ⇧
+                      </kbd>
+                      <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
+                        2
                       </kbd>
                     </span>
                   </li>
@@ -600,7 +621,7 @@ export default function App() {
                   </li>
                   <li className="flex items-center justify-between gap-4">
                     <span className="text-sm text-foreground">
-                      Clear and leave search
+                      Leave search
                     </span>
                     <span className="flex shrink-0 items-center gap-1">
                       <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
@@ -664,7 +685,7 @@ export default function App() {
           <div className="flex flex-col gap-8">
             <section className="flex flex-col gap-3">
               <h2 className="text-sm font-medium text-muted-foreground">
-                Frequent
+                Frequently used
               </h2>
               <div className="flex flex-col gap-3">
                 {frequentlyUsed.map((prompt) => (
@@ -673,9 +694,14 @@ export default function App() {
               </div>
             </section>
             <section className="flex flex-col gap-3">
-              {remaining.map((prompt) => (
-                <PromptCard key={prompt.id} prompt={prompt} />
-              ))}
+              <h2 className="text-sm font-medium text-muted-foreground">
+                Everything else
+              </h2>
+              <div className="flex flex-col gap-3">
+                {remaining.map((prompt) => (
+                  <PromptCard key={prompt.id} prompt={prompt} />
+                ))}
+              </div>
             </section>
           </div>
         ) : (
