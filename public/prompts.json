@@ -15,7 +15,7 @@
     "id": "handoff-figma-mcp",
     "title": "Implement a Figma design",
     "category": "Handoff",
-    "prompt": "• Use figma-design-to-code to implement this Figma design: [Insert Link]"
+    "prompt": "• Implement this Figma design: [Insert Link]"
   },
   {
     "id": "discovery-screen",
