@@ -46,7 +46,7 @@
     "id": "prs-push-changes",
     "title": "Create a PR",
     "category": "PRs",
-    "prompt": "• Add and commit the changes\n• Run /mms-create-pr",
+    "prompt": "• Add and commit the changes\n• Run /mms-create-pr\n• Do not add PR to the review queue",
     "note": "MetaMask Skills must be installed"
   },
   {
