@@ -56,6 +56,18 @@
     "prompt": "• Run yarn install and yarn skills"
   },
   {
+    "id": "prs-install-maestro-visual-regression",
+    "title": "Install Maestro visual regression skill",
+    "category": "PRs",
+    "prompt": "• Copy the skill from [this PR](https://github.com/MetaMask/metamask-mobile/pull/35179) to my own ~/.cursor/skills/maestro-visual-regression"
+  },
+  {
+    "id": "prs-maestro-before-after",
+    "title": "Automatically create a before and after picture",
+    "category": "PRs",
+    "prompt": "• Run /maestro-visual-regression [Insert Branch]"
+  },
+  {
     "id": "discovery-slack-spec",
     "title": "Create design specs from Slack messages",
     "category": "Discovery",
