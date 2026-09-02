@@ -68,6 +68,12 @@
     "prompt": "• Run /maestro-visual-regression [Insert Branch]"
   },
   {
+    "id": "prs-reinstall-app",
+    "title": "Reinstall the app",
+    "category": "PRs",
+    "prompt": "• Run yarn install:ios:runway"
+  },
+  {
     "id": "discovery-slack-spec",
     "title": "Create design specs from Slack messages",
     "category": "Discovery",
